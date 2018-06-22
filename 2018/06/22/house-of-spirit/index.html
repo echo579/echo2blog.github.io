@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="binary from pwnable.tw Spirited Away ### 0x00 Abstract ​    Easy house of spirit.  ### 0x01 Function analysis ​    Play with this binary. Finding it only provide commenting function. It require you to">
+<meta name="description" content="binary from pwnable.tw Spirited Away # 0x00 Abstract​    Easy house of spirit.  # 0x01 Function analysis​    Play with this binary. Finding it only provide commenting function. It require you to input">
 <meta name="keywords" content="pwn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="house of spirit">
 <meta property="og:url" content="http://yoursite.com/2018/06/22/house-of-spirit/index.html">
 <meta property="og:site_name" content="echo">
-<meta property="og:description" content="binary from pwnable.tw Spirited Away ### 0x00 Abstract ​    Easy house of spirit.  ### 0x01 Function analysis ​    Play with this binary. Finding it only provide commenting function. It require you to">
+<meta property="og:description" content="binary from pwnable.tw Spirited Away # 0x00 Abstract​    Easy house of spirit.  # 0x01 Function analysis​    Play with this binary. Finding it only provide commenting function. It require you to input">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/function.png">
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/vul.png">
@@ -93,10 +93,10 @@
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/unused.png">
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/inuse.png">
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/checksize.png">
-<meta property="og:updated_time" content="2018-06-22T03:08:49.605Z">
+<meta property="og:updated_time" content="2018-06-22T03:14:10.546Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="house of spirit">
-<meta name="twitter:description" content="binary from pwnable.tw Spirited Away ### 0x00 Abstract ​    Easy house of spirit.  ### 0x01 Function analysis ​    Play with this binary. Finding it only provide commenting function. It require you to">
+<meta name="twitter:description" content="binary from pwnable.tw Spirited Away # 0x00 Abstract​    Easy house of spirit.  # 0x01 Function analysis​    Play with this binary. Finding it only provide commenting function. It require you to input">
 <meta name="twitter:image" content="http://yoursite.com/2018/06/22/house-of-spirit/function.png">
 
 
@@ -308,10 +308,8 @@
 
       
         <p><em>binary from pwnable.tw Spirited Away</em></p>
-<p>### 0x00 Abstract</p>
-<p>​    Easy house of spirit. </p>
-<p>### 0x01 Function analysis</p>
-<p>​    Play with this binary. Finding it only provide commenting function. It require you to input your name, age, reason, comment.</p>
+<h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="# 0x00 Abstract"></a># 0x00 Abstract</h2><p>​    Easy house of spirit. </p>
+<h2 id="0x01-Function-analysis"><a href="#0x01-Function-analysis" class="headerlink" title="# 0x01 Function analysis"></a># 0x01 Function analysis</h2><p>​    Play with this binary. Finding it only provide commenting function. It require you to input your name, age, reason, comment.</p>
 <p><img src="/2018/06/22/house-of-spirit/./function.png" alt="Alt text"></p>
 <p>​    Reverse this binary, We can figure out the vulnerabilities</p>
 <ol>
@@ -321,9 +319,8 @@
 <ol start="2">
 <li>After we control name_comment_len, we can fill comment with 0x6e length. So we can control the name pointer to where we want. If you make it point to stack and make a fake heap struct, next time you malloc, you will get a heap struct in stack.</li>
 </ol>
-<p>​    pwnable.tw said “Do not share the solutions of high score challenges in public”. So I will not offer the exp.</p>
-<p>### 0x02 Make fake heap</p>
-<p>​    The most important  of this challenge is to make fake heap struct. In this place, I will give a graphic to show what the heap struct really is. First is the heap struct in use.</p>
+<p>pwnable.tw said “Do not share the solutions of high score challenges in public”. So I will not offer the exp.</p>
+<h2 id="0x02-Make-fake-heap"><a href="#0x02-Make-fake-heap" class="headerlink" title="# 0x02 Make fake heap"></a># 0x02 Make fake heap</h2><p>​    The most important  of this challenge is to make fake heap struct. In this place, I will give a graphic to show what the heap struct really is. First is the heap struct in use.</p>
 <p><img src="/2018/06/22/house-of-spirit/./use.png" alt="Alt text"></p>
 <p>​    Next is the heap struct not in use.</p>
 <p><img src="/2018/06/22/house-of-spirit/./unused.png" alt="Alt text"></p>
@@ -422,8 +419,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -478,6 +484,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Abstract"><span class="nav-number">1.</span> <span class="nav-text"># 0x00 Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Function-analysis"><span class="nav-number">2.</span> <span class="nav-text"># 0x01 Function analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Make-fake-heap"><span class="nav-number">3.</span> <span class="nav-text"># 0x02 Make fake heap</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
