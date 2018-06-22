@@ -306,18 +306,13 @@
 <p>​    Play with this binary. Finding it only provide commenting function. It require you to input your name, age, reason, comment.</p>
 <p><img src="/2018/06/22/house-of-spirit/./function.png" alt="Alt text"></p>
 <p>​    Reverse this binary, We can figure out the vulnerabilities</p>
-<ul>
-<li><ol>
-<li><p>When cnt larger than 99, the length of s is 57. So the name_comment_len will be covered with ascii ‘n’ (hex in 0x6e).</p>
-<p><img src="/2018/06/22/house-of-spirit/./vul.png" alt="Alt text"></p>
-</li>
+<ol>
+<li>When cnt larger than 99, the length of s is 57. So the name_comment_len will be covered with ascii ‘n’ (hex in 0x6e).</li>
 </ol>
-</li>
-<li><ol start="2">
+<p><img src="/2018/06/22/house-of-spirit/./vul.png" alt="Alt text"></p>
+<ol start="2">
 <li>After we control name_comment_len, we can fill comment with 0x6e length. So we can control the name pointer to where we want. If you make it point to stack and make a fake heap struct, next time you malloc, you will get a heap struct in stack.</li>
 </ol>
-</li>
-</ul>
 <p>​    pwnable.tw said “Do not share the solutions of high score challenges in public”. So I will not offer the exp.</p>
 <h2 id="0x02-Make-fake-heap"><a href="#0x02-Make-fake-heap" class="headerlink" title="# 0x02 Make fake heap"></a># 0x02 Make fake heap</h2><p>​    The most important  of this challenge is to make fake heap struct. In this place, I will give a graphic to show what the heap struct really is. First is the heap struct in use.</p>
 <p><img src="/2018/06/22/house-of-spirit/./use.png" alt="Alt text"></p>
