@@ -229,6 +229,153 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/22/house-of-spirit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="echo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog-logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="echo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/22/house-of-spirit/" itemprop="url">house of spirit</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-22T10:06:38+08:00">
+                2018-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><em>binary from pwnable.tw Spirited Away</em></p>
+<h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="# 0x00 Abstract"></a># 0x00 Abstract</h2><p>​    Easy house of spirit. </p>
+<p>### 0x01 Function analysis</p>
+<p>​    Play with this binary. Finding it only provide commenting function. It require you to input your name, age, reason, comment.</p>
+<p><img src="/2018/06/22/house-of-spirit/./house-of-spirit/function.png" alt="Alt text"></p>
+<p>​    Reverse this binary, We can figure out the vulnerabilities</p>
+<ul>
+<li><ol>
+<li><p>When cnt larger than 99, the length of s is 57. So the name_comment_len will be covered with ascii ‘n’ (hex in 0x6e).</p>
+<p><img src="/2018/06/22/house-of-spirit/./house-of-spirit/vul.png" alt="Alt text"></p>
+</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>After we control name_comment_len, we can fill comment with 0x6e length. So we can control the name pointer to where we want. If you make it point to stack and make a fake heap struct, next time you malloc, you will get a heap struct in stack.</li>
+</ol>
+</li>
+</ul>
+<p>​    pwnable.tw said “Do not share the solutions of high score challenges in public”. So I will not offer the exp.</p>
+<h2 id="0x02-Make-fake-heap"><a href="#0x02-Make-fake-heap" class="headerlink" title="# 0x02 Make fake heap"></a># 0x02 Make fake heap</h2><p>​    The most important  of this challenge is to make fake heap struct. In this place, I will give a graphic to show what the heap struct really is. First is the heap struct in use.</p>
+<p><img src="/2018/06/22/house-of-spirit/./house-of-spirit/use.png" alt="Alt text"></p>
+<p>​    Next is the heap struct not in use.</p>
+<p><img src="/2018/06/22/house-of-spirit/./house-of-spirit/unused.png" alt="Alt text"></p>
+<p>​    Here I will not explain what the every variable means. If you have problem with it, just google.</p>
+<p>​    </p>
+<p>​    But just make a fake heap struct is not enough. We need to make two fake heap struct. This is because free function will check the next heap struct flag P and Size of chunk. After reading the free source code, we find it require P flag to avoid the double free and Size of next chunk is larger than 2*SIZE_SZ, it will be 8 in x86 system.</p>
+<p><img src="/2018/06/22/house-of-spirit/./house-of-spirit/inuse.png" alt="Alt text"></p>
+<p><img src="/2018/06/22/house-of-spirit/./house-of-spirit/checksize.png" alt="Alt text"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/Hello-my-blog/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -389,7 +536,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -397,6 +544,15 @@
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
             
 
           </nav>
