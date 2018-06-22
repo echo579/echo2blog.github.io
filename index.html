@@ -301,7 +301,8 @@
         
           
             <p><em>binary from pwnable.tw Spirited Away</em></p>
-<h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="# 0x00 Abstract"></a># 0x00 Abstract</h2><p>​    Easy house of spirit. </p>
+<p>### 0x00 Abstract</p>
+<p>​    Easy house of spirit. </p>
 <p>### 0x01 Function analysis</p>
 <p>​    Play with this binary. Finding it only provide commenting function. It require you to input your name, age, reason, comment.</p>
 <p><img src="/2018/06/22/house-of-spirit/./function.png" alt="Alt text"></p>
@@ -314,13 +315,14 @@
 <li>After we control name_comment_len, we can fill comment with 0x6e length. So we can control the name pointer to where we want. If you make it point to stack and make a fake heap struct, next time you malloc, you will get a heap struct in stack.</li>
 </ol>
 <p>​    pwnable.tw said “Do not share the solutions of high score challenges in public”. So I will not offer the exp.</p>
-<h2 id="0x02-Make-fake-heap"><a href="#0x02-Make-fake-heap" class="headerlink" title="# 0x02 Make fake heap"></a># 0x02 Make fake heap</h2><p>​    The most important  of this challenge is to make fake heap struct. In this place, I will give a graphic to show what the heap struct really is. First is the heap struct in use.</p>
+<p>### 0x02 Make fake heap</p>
+<p>​    The most important  of this challenge is to make fake heap struct. In this place, I will give a graphic to show what the heap struct really is. First is the heap struct in use.</p>
 <p><img src="/2018/06/22/house-of-spirit/./use.png" alt="Alt text"></p>
 <p>​    Next is the heap struct not in use.</p>
 <p><img src="/2018/06/22/house-of-spirit/./unused.png" alt="Alt text"></p>
 <p>​    Here I will not explain what the every variable means. If you have problem with it, just google.</p>
 <p>​    </p>
-<p>​    But just make a fake heap struct is not enough. We need to make two fake heap struct. This is because free function will check the next heap struct flag P and Size of chunk. After reading the free source code, we find it require P flag to avoid the double free and Size of next chunk is larger than 2*SIZE_SZ, it will be 8 in x86 system.</p>
+<p>​    But make a fake heap struct is not enough. We need to make two fake heap struct. This is because free function will check the next heap struct flag P and Size of chunk. After reading the free source code, we find it require P flag to avoid the double free and Size of next chunk is larger than 2*SIZE_SZ, it will be 8 in x86 system.</p>
 <p><img src="/2018/06/22/house-of-spirit/./inuse.png" alt="Alt text"></p>
 <p><img src="/2018/06/22/house-of-spirit/./checksize.png" alt="Alt text"></p>
 
