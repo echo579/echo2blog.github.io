@@ -91,9 +91,8 @@
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/vul.png">
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/use.png">
 <meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/unused.png">
-<meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/inuse.png">
-<meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/checksize.png">
-<meta property="og:updated_time" content="2018-06-22T03:14:10.546Z">
+<meta property="og:image" content="http://yoursite.com/2018/06/22/house-of-spirit/source.png">
+<meta property="og:updated_time" content="2018-06-23T02:44:09.903Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="house of spirit">
 <meta name="twitter:description" content="binary from pwnable.tw Spirited Away # 0x00 Abstract​    Easy house of spirit.  # 0x01 Function analysis​    Play with this binary. Finding it only provide commenting function. It require you to input">
@@ -324,11 +323,9 @@
 <p><img src="/2018/06/22/house-of-spirit/./use.png" alt="Alt text"></p>
 <p>​    Next is the heap struct not in use.</p>
 <p><img src="/2018/06/22/house-of-spirit/./unused.png" alt="Alt text"></p>
-<p>​    Here I will not explain what the every variable means. If you have problem with it, just google.</p>
-<p>​    </p>
-<p>​    But make a fake heap struct is not enough. We need to make two fake heap struct. This is because free function will check the next heap struct flag P and Size of chunk. After reading the free source code, we find it require P flag to avoid the double free and Size of next chunk is larger than 2*SIZE_SZ, it will be 8 in x86 system.</p>
-<p><img src="/2018/06/22/house-of-spirit/./inuse.png" alt="Alt text"></p>
-<p><img src="/2018/06/22/house-of-spirit/./checksize.png" alt="Alt text"></p>
+<p>​    Here I will not explain what the every variable means. If you have problem with it, just google.​</p>
+<p>​    But make a fake heap struct is not enough. We need to make two fake heap struct. This is because free function require next chunk size larger than 2*SIZE_SZ (SIZE_SZ = 4 in x86 system). But the size is not size&gt;&gt;3*8. It contains flag bits. So if you set it 9 or 0xa, it is okay.</p>
+<p><img src="/2018/06/22/house-of-spirit/./source.png" alt="Alt text"></p>
 
       
     </div>
