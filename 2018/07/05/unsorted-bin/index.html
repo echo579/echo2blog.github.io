@@ -71,21 +71,21 @@
 
 
 
-<meta name="description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. #0x01 What is unsorted bin​    System using unsorted bin to">
+<meta name="description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. # 0x01 What is unsorted bin​    System using unsorted bin to">
 <meta name="keywords" content="pwn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="unsorted_bin">
 <meta property="og:url" content="http://yoursite.com/2018/07/05/unsorted-bin/index.html">
 <meta property="og:site_name" content="echo">
-<meta property="og:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. #0x01 What is unsorted bin​    System using unsorted bin to">
+<meta property="og:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. # 0x01 What is unsorted bin​    System using unsorted bin to">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/bins.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/main_arena.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/malloc_state.png">
-<meta property="og:updated_time" content="2018-07-05T14:13:17.653Z">
+<meta property="og:updated_time" content="2018-07-05T14:21:03.148Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="unsorted_bin">
-<meta name="twitter:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. #0x01 What is unsorted bin​    System using unsorted bin to">
+<meta name="twitter:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. # 0x01 What is unsorted bin​    System using unsorted bin to">
 <meta name="twitter:image" content="http://yoursite.com/2018/07/05/unsorted-bin/bins.png">
 
 
@@ -298,7 +298,7 @@
       
         <p><em>binary from pwnable.tw Secrect garden</em></p>
 <h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="# 0x00 Abstract"></a># 0x00 Abstract</h2><p>​    Using unsorted bin to leak libc address. Other attack method will be added later.</p>
-<h2 id="0x01-What-is-unsorted-bin"><a href="#0x01-What-is-unsorted-bin" class="headerlink" title="#0x01 What is unsorted bin"></a>#0x01 What is unsorted bin</h2><p>​    System using unsorted bin to give the recently released chunk a second chance of malloc.  Use unsorted bin can accelerate system allocation of memory. Because the entire operation no longer takes extra time to find the right bin.</p>
+<h2 id="0x01-What-is-unsorted-bin"><a href="#0x01-What-is-unsorted-bin" class="headerlink" title="# 0x01 What is unsorted bin"></a># 0x01 What is unsorted bin</h2><p>​    System using unsorted bin to give the recently released chunk a second chance of malloc.  Use unsorted bin can accelerate system allocation of memory. Because the entire operation no longer takes extra time to find the right bin.</p>
 <p>​    Unsorted bin manages chunks using a circular double-linked list. In the process of using, the traversal order used is FIFO. </p>
 <p>​    Unsorted bin is stored in the first unit of Bins in main_arena. </p>
 <p><img src="/2018/07/05/unsorted-bin/./bins.png" alt="Alt text"></p>
@@ -308,8 +308,7 @@
 <li>2 When a chunk that does not belong to the fast bin is released, and the chunk is not adjacent to the top chunk, the chunk is first placed in the unsorted bin.</li>
 <li>3 When malloc_consolidate is executed, the merged chunk may be placed in the unsorted bin if it is not near the top chunk.</li>
 </ul>
-<p>### 0x02 How to leak libc base address </p>
-<p>​    As mentioned above, unsorted bin is stored in the first unit of Bins in main_arena.  And main_arena is stored in memory as a global variable. </p>
+<h2 id="0x02-How-to-leak-libc-base-address"><a href="#0x02-How-to-leak-libc-base-address" class="headerlink" title="# 0x02 How to leak libc base address"></a># 0x02 How to leak libc base address</h2><p>​    As mentioned above, unsorted bin is stored in the first unit of Bins in main_arena.  And main_arena is stored in memory as a global variable. </p>
 <p><img src="/2018/07/05/unsorted-bin/./main_arena.png" alt="Alt text"></p>
 <p><img src="/2018/07/05/unsorted-bin/./malloc_state.png" alt="Alt text"></p>
 <p>​    If a chunk was recently placed in unsorted bin, then its bk pointer points to the first unit in the main_arena Bins.</p>
@@ -484,7 +483,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Abstract"><span class="nav-number">1.</span> <span class="nav-text"># 0x00 Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-What-is-unsorted-bin"><span class="nav-number">2.</span> <span class="nav-text">#0x01 What is unsorted bin</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Abstract"><span class="nav-number">1.</span> <span class="nav-text"># 0x00 Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-What-is-unsorted-bin"><span class="nav-number">2.</span> <span class="nav-text"># 0x01 What is unsorted bin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-How-to-leak-libc-base-address"><span class="nav-number">3.</span> <span class="nav-text"># 0x02 How to leak libc base address</span></a></li></ol></div>
             
 
           </div>
