@@ -60,7 +60,7 @@
 
 
 
-  <meta name="keywords" content="echo" />
+  <meta name="keywords" content="pwn," />
 
 
 
@@ -71,14 +71,22 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. #0x01 What is unsorted bin​    System using unsorted bin to">
+<meta name="keywords" content="pwn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unsorted_bin">
+<meta property="og:url" content="http://yoursite.com/2018/07/05/unsorted-bin/index.html">
 <meta property="og:site_name" content="echo">
+<meta property="og:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. #0x01 What is unsorted bin​    System using unsorted bin to">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-02T02:27:01.179Z">
+<meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/bins.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/main_arena.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/malloc_state.png">
+<meta property="og:updated_time" content="2018-07-05T14:13:17.653Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
+<meta name="twitter:title" content="unsorted_bin">
+<meta name="twitter:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    Using unsorted bin to leak libc address. Other attack method will be added later. #0x01 What is unsorted bin​    System using unsorted bin to">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/05/unsorted-bin/bins.png">
 
 
 
@@ -108,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/05/unsorted-bin/"/>
 
 
 
 
 
-  <title>tags | echo</title>
+  <title>unsorted_bin | echo</title>
   
 
 
@@ -209,33 +217,161 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/unsorted-bin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="echo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog-logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="echo">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">unsorted_bin</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-05T20:17:31+08:00">
+                2018-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-      </div>
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p><em>binary from pwnable.tw Secrect garden</em></p>
+<h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="# 0x00 Abstract"></a># 0x00 Abstract</h2><p>​    Using unsorted bin to leak libc address. Other attack method will be added later.</p>
+<h2 id="0x01-What-is-unsorted-bin"><a href="#0x01-What-is-unsorted-bin" class="headerlink" title="#0x01 What is unsorted bin"></a>#0x01 What is unsorted bin</h2><p>​    System using unsorted bin to give the recently released chunk a second chance of malloc.  Use unsorted bin can accelerate system allocation of memory. Because the entire operation no longer takes extra time to find the right bin.</p>
+<p>​    Unsorted bin manages chunks using a circular double-linked list. In the process of using, the traversal order used is FIFO. </p>
+<p>​    Unsorted bin is stored in the first unit of Bins in main_arena. </p>
+<p><img src="/2018/07/05/unsorted-bin/./bins.png" alt="Alt text"></p>
+<p>​    There are usually three ways to put a chunk into the unsorted bin list.</p>
+<ul>
+<li>1 When a large chunk is split into two halves, if the rest is greater than MINSIZE, it will be placed in the unsorted bin.</li>
+<li>2 When a chunk that does not belong to the fast bin is released, and the chunk is not adjacent to the top chunk, the chunk is first placed in the unsorted bin.</li>
+<li>3 When malloc_consolidate is executed, the merged chunk may be placed in the unsorted bin if it is not near the top chunk.</li>
+</ul>
+<p>### 0x02 How to leak libc base address </p>
+<p>​    As mentioned above, unsorted bin is stored in the first unit of Bins in main_arena.  And main_arena is stored in memory as a global variable. </p>
+<p><img src="/2018/07/05/unsorted-bin/./main_arena.png" alt="Alt text"></p>
+<p><img src="/2018/07/05/unsorted-bin/./malloc_state.png" alt="Alt text"></p>
+<p>​    If a chunk was recently placed in unsorted bin, then its bk pointer points to the first unit in the main_arena Bins.</p>
+<p>​    The difference between this address and the libc base address is fixed. If we can leak this address, we can calculate the base address of libc based on the difference. It should be noted that the difference will vary depending on the libc.</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pwn/" rel="tag"># pwn</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/22/house-of-spirit/" rel="next" title="house of spirit">
+                <i class="fa fa-chevron-left"></i> house of spirit
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -273,8 +409,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -329,6 +474,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Abstract"><span class="nav-number">1.</span> <span class="nav-text"># 0x00 Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-What-is-unsorted-bin"><span class="nav-number">2.</span> <span class="nav-text">#0x01 What is unsorted bin</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
