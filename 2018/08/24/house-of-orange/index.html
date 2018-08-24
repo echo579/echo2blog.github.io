@@ -71,23 +71,18 @@
 
 
 
-<meta name="description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    When a chunk is first unsorted bin chunk, its bk&amp;amp;fd pointe to main_arena+88, either you leak it by using output, or use unsorted bin attac">
+<meta name="description" content="# 0x00 Abstract​    House of orange is mainly used in the absence of a free function. When you malloc a chunk larger than top chunk. System will put top chunk into unsorted bin list and get a new top">
 <meta name="keywords" content="pwn">
 <meta property="og:type" content="article">
-<meta property="og:title" content="unsorted_bin">
-<meta property="og:url" content="http://yoursite.com/2018/07/05/unsorted-bin/index.html">
+<meta property="og:title" content="house-of-orange">
+<meta property="og:url" content="http://yoursite.com/2018/08/24/house-of-orange/index.html">
 <meta property="og:site_name" content="echo">
-<meta property="og:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    When a chunk is first unsorted bin chunk, its bk&amp;amp;fd pointe to main_arena+88, either you leak it by using output, or use unsorted bin attac">
+<meta property="og:description" content="# 0x00 Abstract​    House of orange is mainly used in the absence of a free function. When you malloc a chunk larger than top chunk. System will put top chunk into unsorted bin list and get a new top">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/bins.png">
-<meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/main_arena.png">
-<meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/malloc_state.png">
-<meta property="og:image" content="http://yoursite.com/2018/07/05/unsorted-bin/unsorted-bin-attack.png">
-<meta property="og:updated_time" content="2018-07-27T13:52:19.413Z">
+<meta property="og:updated_time" content="2018-08-24T08:48:11.889Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="unsorted_bin">
-<meta name="twitter:description" content="binary from pwnable.tw Secrect garden # 0x00 Abstract​    When a chunk is first unsorted bin chunk, its bk&amp;amp;fd pointe to main_arena+88, either you leak it by using output, or use unsorted bin attac">
-<meta name="twitter:image" content="http://yoursite.com/2018/07/05/unsorted-bin/bins.png">
+<meta name="twitter:title" content="house-of-orange">
+<meta name="twitter:description" content="# 0x00 Abstract​    House of orange is mainly used in the absence of a free function. When you malloc a chunk larger than top chunk. System will put top chunk into unsorted bin list and get a new top">
 
 
 
@@ -117,13 +112,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/05/unsorted-bin/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/24/house-of-orange/"/>
 
 
 
 
 
-  <title>unsorted_bin | echo</title>
+  <title>house-of-orange | echo</title>
   
 
 
@@ -230,7 +225,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/unsorted-bin/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/24/house-of-orange/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echo">
@@ -247,7 +242,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">unsorted_bin</h1>
+          <h1 class="post-title" itemprop="name headline">house-of-orange</h1>
         
 
         <div class="post-meta">
@@ -259,8 +254,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-05T20:17:31+08:00">
-                2018-07-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-24T16:26:24+08:00">
+                2018-08-24
               </time>
             
 
@@ -302,34 +297,17 @@
       
 
       
-        <p><em>binary from pwnable.tw Secrect garden</em></p>
-<h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="# 0x00 Abstract"></a># 0x00 Abstract</h2><p>​    When a chunk is first unsorted bin chunk, its bk&amp;fd pointe to main_arena+88, either you leak it by using output, or use unsorted bin attack to set an address to main_arena+88. </p>
-<h2 id="0x01-What-is-unsorted-bin"><a href="#0x01-What-is-unsorted-bin" class="headerlink" title="# 0x01 What is unsorted bin"></a># 0x01 What is unsorted bin</h2><p>​    System using unsorted bin to give the recently released chunk a second chance of malloc.  Use unsorted bin can accelerate system allocation of memory. Because the entire operation no longer takes extra time to find the right bin.</p>
-<p>​    Unsorted bin manages chunks using a circular double-linked list. In the process of using, the traversal order used is FIFO. </p>
-<p>​    Unsorted bin is stored in the first unit of Bins in main_arena. </p>
-<p><img src="/2018/07/05/unsorted-bin/./bins.png" alt="Alt text"></p>
-<p>​    There are usually three ways to put a chunk into the unsorted bin list.</p>
+        <h2 id="0x00-Abstract"><a href="#0x00-Abstract" class="headerlink" title="# 0x00 Abstract"></a># 0x00 Abstract</h2><p>​    House of orange is mainly used in the absence of a free function. When you malloc a chunk larger than top chunk. System will put top chunk into unsorted bin list and get a new top chunk.</p>
+<p>​    This method is mainly used for unsorted bin attack without free function. Complete exploit also requires knowledge of IO_FILE.</p>
+<h2 id="0x01-hijack-size-of-top-chunk"><a href="#0x01-hijack-size-of-top-chunk" class="headerlink" title="# 0x01 hijack size of top chunk"></a># 0x01 hijack size of top chunk</h2><p>​    Forged top chunk size have several requirements</p>
 <ul>
-<li>1 When a large chunk is split into two halves, if the rest is greater than MINSIZE, it will be placed in the unsorted bin.</li>
-<li>2 When a chunk that does not belong to the fast bin is released, and the chunk is not adjacent to the top chunk, the chunk is first placed in the unsorted bin.</li>
-<li>3 When malloc_consolidate is executed, the merged chunk may be placed in the unsorted bin if it is not near the top chunk.</li>
+<li>1.Forged size must be aligned to the memory page</li>
+<li>2.Size is greater than MINSIZE (0x10)</li>
+<li>3.Size is smaller than the chunk size + MINSIZE (0x10) applied later</li>
+<li>4.The prev inuse bit of size must be 1</li>
 </ul>
-<h2 id="0x02-How-to-leak-libc-base-address"><a href="#0x02-How-to-leak-libc-base-address" class="headerlink" title="# 0x02 How to leak libc base address"></a># 0x02 How to leak libc base address</h2><p>​    As mentioned above, unsorted bin is stored in the first unit of Bins in main_arena.  And main_arena is stored in memory as a global variable. </p>
-<p><img src="/2018/07/05/unsorted-bin/./main_arena.png" alt="Alt text"></p>
-<p><img src="/2018/07/05/unsorted-bin/./malloc_state.png" alt="Alt text"></p>
-<p>​    If a chunk was recently placed in unsorted bin, then its bk pointer points to the first unit in the main_arena Bins.</p>
-<p>​    The difference between this address and the libc base address is fixed. If we can leak this address, we can calculate the base address of libc based on the difference. It should be noted that the difference will vary depending on the libc.</p>
-<h2 id="0x03-Unsorted-bin-attack"><a href="#0x03-Unsorted-bin-attack" class="headerlink" title="# 0x03 Unsorted bin attack"></a># 0x03 Unsorted bin attack</h2><p>​    The reason of unsorted bin attack is from the libc source code</p>
-<p><img src="/2018/07/05/unsorted-bin/./unsorted-bin-attack.png" alt="Alt text"></p>
-<p>​    If you can control bk of unsorted bin, next time you malloc it, it will change the bck-&gt;fd to main_arena+88.</p>
-<p>​    Unsorted bin attack need support of uaf vulnerability.</p>
-<p>​    Unsorted bin attack as following:</p>
-<ul>
-<li>1.Malloc a big chunk and free it to get unsorted bin.</li>
-<li>2.Use uaf vulnerability to make its bk point to where you want.</li>
-<li>3.Malloc the same size chunk to trigger this attack.</li>
-</ul>
-
+<p>​    In short, size needs to meet the following conditions</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top_chunk_addr + top_chunk_size - 1 % 0x1000 = 0</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -359,8 +337,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/22/house-of-spirit/" rel="next" title="house of spirit">
-                <i class="fa fa-chevron-left"></i> house of spirit
+              <a href="/2018/07/27/house-of-roman/" rel="next" title="house-of-roman">
+                <i class="fa fa-chevron-left"></i> house-of-roman
               </a>
             
           </div>
@@ -368,10 +346,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/27/house-of-roman/" rel="prev" title="house-of-roman">
-                house-of-roman <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -503,7 +477,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Abstract"><span class="nav-number">1.</span> <span class="nav-text"># 0x00 Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-What-is-unsorted-bin"><span class="nav-number">2.</span> <span class="nav-text"># 0x01 What is unsorted bin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-How-to-leak-libc-base-address"><span class="nav-number">3.</span> <span class="nav-text"># 0x02 How to leak libc base address</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Unsorted-bin-attack"><span class="nav-number">4.</span> <span class="nav-text"># 0x03 Unsorted bin attack</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-Abstract"><span class="nav-number">1.</span> <span class="nav-text"># 0x00 Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-hijack-size-of-top-chunk"><span class="nav-number">2.</span> <span class="nav-text"># 0x01 hijack size of top chunk</span></a></li></ol></div>
             
 
           </div>
